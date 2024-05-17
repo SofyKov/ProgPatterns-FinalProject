@@ -1,0 +1,107 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package final_project;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/**
+ *
+ * @author Admin
+ */
+//Student User 
+public class Student 
+{
+    public void searchByBookTitle()
+    {
+        String url = "jdbc:mysql://localhost:3306/book";
+        String uname = "root";
+        String password = "F54#432bhd&";
+        String query = "select * from book.student";
+        String bookTileRes = "";
+        
+         try 
+         {
+            Connection con = DriverManager.getConnection(url, uname, password);
+            Statement statement = con.createStatement();
+            ResultSet result = statement.executeQuery(query);
+            ResultSetMetaData resultMD = result.getMetaData();
+            int cntr = resultMD.getColumnCount();
+            String colName[] = new String[cntr];
+            
+            for(int i = 1; i <= cntr; i++) 
+            {
+                colName[i-1] = resultMD.getColumnLabel(i);
+                System.out.println("");
+                System.out.println(colName[i-1]);
+            }
+            
+            for(int a = 0; a <= resultMD.getColumnCount(); a++)
+            {
+                bookTileRes += result;
+            }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void searchByAuthor()
+    {
+    
+    }
+    
+    public void searchByPublisher()
+    {
+    
+    }
+    
+    public String viewBooks()
+    {
+        String url = "jdbc:mysql://localhost:3306/book";
+        String uname = "root";
+        String password = "F54#432bhd&";
+        String query = "select * from book.student";
+        String bookData = "";
+        
+         try 
+         {
+            Connection con = DriverManager.getConnection(url, uname, password);
+            Statement statement = con.createStatement();
+            ResultSet result = statement.executeQuery(query);
+            ResultSetMetaData resultMD = result.getMetaData();
+
+            while(result.next()) 
+            {
+                for(int i = 1; i <= resultMD.getColumnCount(); i++) 
+                {
+                    bookData += result.getString(i) + " | ";
+                    if(i == 3)
+                    {
+                        bookData += "\n";
+                    }
+                }
+            }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+         return bookData;
+    }
+    
+    public void borrowBook()
+    {
+    
+    }
+    
+    public void returnBook()
+    {
+        
+    }
+}

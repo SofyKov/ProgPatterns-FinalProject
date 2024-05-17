@@ -1,0 +1,99 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package final_project;
+
+import java.util.Date;
+import java.sql.*;
+import java.util.Calendar;
+
+/**
+ *
+ * @author Admin
+ */
+//Librarian User
+public class Librarian 
+{
+    
+    public void addBook(String SN, String title, String author, String publisher, 
+            float price, int quantity, int issued)
+    {
+        Book book = new Book( SN,  title, author, publisher,  price,  quantity,  issued);
+        
+        String url = "jdbc:mysql://localhost:3306/book";
+        String uname = "root";
+        String password = "F54#432bhd&";
+        String query = "select * from book.book";
+
+        try {
+            Connection con = DriverManager.getConnection(url, uname, password);
+            Statement statement = con.createStatement();
+            
+            Calendar calendar = Calendar.getInstance();
+            java.sql.Date currDate = new java.sql.Date(calendar.getTime().getTime());
+
+            String sql = "insert into book (SN, title, author, publisher ,price, quantity, issued, addedDate) values (?, ?, ?, ?, ?)";
+ 
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString (0, SN);
+            ps.setString (1, title);
+            ps.setString (2, author);
+            ps.setString (3, publisher);
+            ps.setFloat  (4, price);
+            ps.setInt    (5, quantity);
+            ps.setInt    (6, issued);
+            
+            // Step 6: Process the results
+            ps.execute();
+            con.close();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void issueBook()
+    {
+    
+    }
+    
+    public void returnBook()
+    {
+    
+    }
+    
+    public String viewStudentLog()
+    {
+        String url = "jdbc:mysql://localhost:3306/book";
+        String uname = "root";
+        String password = "F54#432bhd&";
+        String query = "select * from book.student";
+        String studentData = "";
+        
+         try 
+         {
+            //DriverManager.registerDriver (new oracle.jdbc.driver.OracleDriver());
+            Connection con = DriverManager.getConnection(url, uname, password);
+            Statement statement = con.createStatement();
+            ResultSet result = statement.executeQuery(query);
+            ResultSetMetaData resultMD = result.getMetaData();
+
+            while(result.next()) 
+            {
+                for(int i = 1; i <= resultMD.getColumnCount(); i++) 
+                {
+                    studentData += result.getString(i) + " | ";
+                    if(i == 3)
+                    {
+                        studentData += "\n";
+                    }
+                }
+            }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+         return studentData;
+    }
+}
